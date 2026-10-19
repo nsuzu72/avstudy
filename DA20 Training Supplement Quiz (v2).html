@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DA20 Training Supplement Quiz</title>
+<style>
+:root{--bg:#f4f6f8;--c:#fff;--tx:#14212e;--mu:#586573;--ac:#2f86c4;--hi:#f1c40f;--ok:#1a7f37;--no:#c62828;--bd:#d3d9df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1620;--c:#16212d;--tx:#e6ecf2;--mu:#93a1b0;--ac:#55a7e0;--hi:#f1c40f;--ok:#4cc26a;--no:#ff6b6b;--bd:#2c3b4b}}
+:root[data-theme="dark"]{--bg:#0e1620;--c:#16212d;--tx:#e6ecf2;--mu:#93a1b0;--ac:#55a7e0;--hi:#f1c40f;--ok:#4cc26a;--no:#ff6b6b;--bd:#2c3b4b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 "Avenir Next","Segoe UI",system-ui,sans-serif}
+.w{max-width:680px;margin:0 auto;padding:16px}
+h1{font-size:26px;line-height:1.2;margin:8px 0}h2{font-size:18px;margin:22px 0 6px}
+.card{background:var(--c);border:1px solid var(--bd);border-radius:10px;padding:18px;margin-top:12px}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--bd);background:var(--c);color:var(--tx);padding:10px 16px}
+button:disabled{opacity:.4;cursor:default}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.o{display:block;width:100%;text-align:left;margin:8px 0}
+.o.s{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 16%,var(--c));font-weight:600}
+.p{background:var(--hi);color:#14212e;border-color:var(--hi);font-weight:700}
+input,textarea{font:inherit;width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx)}
+textarea{height:120px;font:13px/1.4 ui-monospace,Menlo,monospace}
+.bar{height:8px;background:var(--bd);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}
+.row{display:flex;gap:8px;margin-top:12px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}td,th{padding:6px 8px;text-align:left;border-bottom:1px solid var(--bd);font-size:14px;white-space:nowrap}
+.ok{color:var(--ok)}.no{color:var(--no)}.mu{color:var(--mu);font-size:14px}
+.big{font-size:44px;font-weight:800;line-height:1}
+</style></head><body><div class="w" id="app"></div>
+<script>
+// Typed: [id,"t",question,[accepted],page]  Multiple choice: [id,"m",question,[options],correctIndex,page]
+const Q=[
+["VS1","t","VS1: stall speed, flaps CRUISE, max weight (KIAS)?",["42"],7],
+["VS2","t","VS0: stall speed, flaps LDG (KIAS)?",["34"],7],
+["VS3","t","VX with flaps T/O (KIAS)?",["57"],7],
+["VS4","t","VY with flaps CRUISE (KIAS)?",["75"],7],
+["VS5","t","Best glide speed, VG (KIAS)?",["73"],7],
+["VS6","t","Maximum flap extension speed with LDG flaps, VFE (KIAS)?",["78"],7],
+["VS7","t","VNO, maximum structural cruising speed (KIAS)?",["118"],7],
+["VS8","t","VNE, never-exceed speed (KIAS)?",["164"],7],
+["VS9","t","VA, maneuvering speed (KIAS)?",["106"],7],
+["LM1","t","Maximum takeoff weight (lbs)?",["1764"],8],
+["LM2","t","Maximum weight in the baggage compartment (lbs)?",["44"],8],
+["LM3","t","Maximum demonstrated crosswind (kts)?",["20"],8],
+["LM4","t","Usable fuel (gal)?",["24"],8],
+["LM5","t","Maximum positive load factor (G) with flaps T/O or LDG?",["2"],9],
+["LM6","t","Maximum cruising altitude (feet DA)?",["13120"],9],
+["LM7","m","In the Continental IO-240-B, the “I” means:",["Inline cylinders","Fuel injected","Intercooled","Inverted oil system"],1,8],
+["LM8","m","As weight drops below max, a given V-speed (Vc = Vm × √(Wc/Wm)):",["Increases","Decreases","Stays the same","Only VA changes"],1,8],
+["LM9","m","Which is approved for the DA20?",["IFR in IMC","Night VFR","Known icing","Thunderstorms"],1,9],
+["PF1","t","TFA rule: never plan to land with less than how many hours of fuel remaining?",["1"],12],
+["PF2","m","Baffles between 0 °C and -10 °C:",["None","Outlet baffles only","Inlet baffles only","Inlet and outlet"],1,12],
+["PF3","m","When the tank is less than full, fuel quantity is confirmed by:",["The fuel gauge","Dipping the tank","Estimating from time","The fuel flow readout"],1,12],
+["PF4","t","Pre-taxi instrument check: altimeter must be within how many feet of field elevation?",["75"],13],
+["PF5","m","First thing to do when rolling out of your parking spot:",["Check the brakes","Check the compass","Set the transponder","Turn on the strobe"],0,13],
+["PF6","m","Engine Fire During Start flow: the throttle goes to:",["Idle","Full","Half","Unchanged"],1,13],
+["PF7","m","Landing lights should be:",["On for all taxi","On only for takeoff and landing, and in flight in the terminal area","On at night only","Off for takeoff"],1,14],
+["DB1","m","Engine failure before or just after rotation, runway remaining. First action:",["Pitch for 73","Throttle idle","Mixture cut-off","Turn back"],1,15],
+["DB2","t","Engine failure below 400' AGL, flaps T/O: airspeed (KIAS)?",["66"],15],
+["DB3","m","Engine failure above 400' AGL: best place to land is within:",["30° of the nose","The windscreen","Behind you","10 NM"],1,15],
+["DB4","m","First item in the restart flow (above 1,000' AGL):",["Cycle magnetos","Alternate air","Fuel pump off","Flaps"],1,15],
+["DB5","m","Securing the aircraft for a landing, which is done LAST?",["Mixture cut-off","Fuel shut-off closed","Ignition off","Battery master off"],3,15],
+["FL1","m","Check flow color code (red / blue / black):",["Engine-out / cruise / all other phases","Takeoff / cruise / landing","Emergency / normal / taxi","Cruise / engine-out / other"],0,16],
+["FL2","m","Check flow order:",["Breakers, Gauges, Gas, Mixture, Pump, Switches","Gas, Breakers, Gauges, Pump, Mixture, Switches","Gauges, Breakers, Mixture, Gas, Switches, Pump","Switches, Breakers, Gas, Gauges, Mixture, Pump"],0,16],
+["FL3","t","Performance maneuvers are flown above what altitude (ft AGL) unless noted?",["1500"],31],
+["TO1","t","Normal takeoff: after rotation, pitch for what speed (VY T/O, KIAS)?",["68"],18],
+["TO2","t","TFA-recommended VR for normal takeoffs (KIAS)?",["50"],17],
+["TO3","t","Cruise climb speed at pattern altitude (KIAS)?",["85"],18],
+["TO4","t","You may turn on course once how many feet above TPA?",["500"],17],
+["PT1","m","Recommended way to join the pattern:",["Straight-in","45° entry to downwind, abeam the departure end","Overfly, then enter base","Enter on crosswind"],1,21],
+["PT2","t","Downwind airspeed (KIAS)?",["90"],21],
+["PT3","m","Normal landing aiming point / touchdown point:",["End of second stripe / thousand footers","Numbers / second stripe","Threshold / numbers","Thousand footers / far end"],0,21],
+["PT4","t","RPM abeam the 1,000 footers when configuring?",["1500"],23],
+["PT5","t","Base leg: speed in the white arc before flaps LDG (KIAS)?",["70"],22],
+["PT6","t","TFA-recommended VREF for normal landings (KIAS)?",["60"],22],
+["PT7","t","The crosswind turn is made how many feet below pattern altitude?",["300"],28],
+["PT8","m","With a crosswind, you aim to touch down on:",["High-wing main first","Low-wing main first","Nose wheel first","Both mains together"],1,22],
+["PT9","m","Touch-and-gos are prohibited for:",["Student soloing and renters","CFIs","All pilots","Night flights only"],0,27],
+["GA1","m","Go-around sequence:",["Cram (power), Climb (VX), Clean (flaps T/O), Call","Call, Clean, Climb, Cram","Flaps, power, pitch, call","Power, call, flaps, climb"],0,29],
+["GA2","t","Go-around initial pitch speed (VX T/O, KIAS)?",["57"],29],
+["GA3","m","Forward slip control inputs:",["Aileron into the wind, full opposite rudder","Aileron away from wind, same rudder","Rudder only","Elevator only"],0,30],
+["MN1","t","Steep turn: RPM when passing 20° of bank?",["2100"],31],
+["MN2","m","First step of stall recovery:",["Full power","Reduce pitch (angle of attack)","Flaps up","Rudder"],1,32],
+["MN3","t","Slow flight: maximum bank angle (degrees)?",["10"],35],
+["MN4","m","Why 2000 RPM (partial power) for power-on stalls?",["Limits pitch-up and spin risk","Saves fuel","Engine cooling","Stays below VNO"],0,34],
+["MN5","t","Power-off stall: pitch for what speed after flaps LDG (KIAS)?",["60"],33],
+["MN6","t","Power-off stall: entry RPM?",["1500"],33],
+["MN7","t","Power-off stall: throttle comes to idle how many feet above the target altitude?",["50"],33],
+["MN8","m","Power-off stall recovery, after reducing pitch, leveling wings and full power:",["Pitch 57, flaps T/O, pitch 68, flaps CRUISE, pitch 75","Flaps CRUISE, pitch 75, then flaps T/O","Pitch 68, flaps LDG, pitch 57","Hold the nose at the horizon until 90 KIAS"],0,33],
+["MN9","m","Wing drop during a stall: TFA says use ___ to return to wings level.",["Top rudder","Aileron only","Bottom rudder","Elevator only"],0,32],
+["MN10","t","Power-on stall: speed to attain before induction (KIAS)?",["50"],34],
+["MN11","t","Power-on stall: pitch attitude held (degrees)?",["20"],34],
+["MN12","m","Power-on stall recovery: lower the nose no lower than:",["The horizon","20° nose down","Vertical","Wherever airspeed returns fastest"],0,34],
+["MN13","t","Steep turn airspeed (KIAS)?",["90"],31],
+["MN14","m","Steep turn completion standards:",["Alt ±100', speed ±10, bank ±5°, heading ±10°","Alt ±50', speed ±5, bank ±10°, heading ±5°","Alt ±200', speed ±15, bank ±5°, heading ±20°","Alt ±100', speed ±5, bank ±10°, heading ±10°"],0,31],
+["MN15","t","Slow flight target airspeed (KIAS)?",["55"],35],
+["MN16","m","Slow flight completion standards:",["Alt ±100', speed +10/-0, heading ±10°","Alt ±100', speed ±10, heading ±10°","Alt ±50', speed +5/-5, heading ±5°","Alt ±200', speed +10/-0, heading ±20°"],0,35],
+["MN17","t","Slow flight descents: RPM?",["1500"],35],
+["MN18","m","In slow flight, if you lean the mixture for a climb, you must:",["Return it full forward when setting throttle for level flight","Leave it leaned","Cut it off","Enrichen only on landing"],0,35],
+["GR1","t","TFA-recommended entry altitude for turns around a point (ft AGL)?",["1000"],36],
+["GR2","m","In ground reference maneuvers, bank is steepest when:",["Heading downwind","Heading upwind","Heading crosswind","It stays constant"],0,36],
+["GR3","t","Turns around a point: target steepest bank (degrees)?",["30"],36],
+["GR4","t","Ground reference maneuvers: bank must never exceed (degrees)?",["45"],36],
+["GR5","m","S-turns: the reference line should be oriented:",["Perpendicular to the wind","Parallel to the wind","Into the wind","Any direction"],0,38],
+["GR6","t","TFA-recommended entry altitude for S-turns (ft AGL)?",["900"],38],
+["GR7","m","Rectangular course: fly parallel to the boundary about:",["¼ to ½ mile","1 to 2 miles","100 yards","Directly over it"],0,39],
+["GR8","m","Rectangular course simulates:",["Flying a traffic pattern at one altitude","A forward slip","A teardrop entry","Power-off 180"],0,39],
+["EM1","t","Emergency descent airspeed (KIAS)?",["118"],41],
+["EM2","t","Emergency descent: bump the throttle every how many feet?",["1000"],41],
+["EM3","t","Transponder code to declare an emergency?",["7700"],15],
+["EM4","m","Engine failure checklist, prop stationary:",["Cycle magnetos","Engage starter","Mixture cut-off","Pump off"],1,42],
+["EM5","m","Power-off 180: your starting position abeam the touchdown point:",["1,000' AGL, normal downwind distance","500' AGL, close in","2,000' AGL, wide","Pattern altitude at midfield"],0,43],
+["EM6","m","How does the engine fire flow differ from engine failure?",["Fire flow runs first, before airspeed and best place to land","Same order","Declare first","Restart first"],0,45],
+["EM7","m","Electrical fire, upon recognition:",["Maintain airspeed and altitude, then battery master off, heat off, ventilate","Emergency descent","Reset breakers","Fire extinguisher first"],0,46],
+["EM8","m","P.A.R.E. spin recovery:",["Power idle, Ailerons neutral, Rudder full opposite, Elevator full forward","Power full, Ailerons opposite, Rudder neutral, Elevator aft","Pitch, Airspeed, Rudder, Elevator","Power idle, Aileron full, Rudder neutral, Elevator aft"],0,47],
+["EM9","t","Spin recovery should be accomplished above what altitude (ft AGL)?",["3000"],47],
+["EM10","m","Nose-low unusual attitude recovery:",["Throttle idle, wings level, raise nose","Full throttle, raise nose, level wings","Raise nose, then level wings, add power","Wings level, full throttle"],0,48],
+["EM11","m","Nose-high unusual attitude: “In the blue, power through.” Recovery:",["Throttle full, nose lower, wings level","Throttle idle, nose lower, wings level","Wings level, nose up, throttle full","Throttle idle, raise nose"],0,48]
+];
+const T={VS:"V-Speeds",LM:"Limits & Weights",PF:"Preflight & Taxi",DB:"Departure Brief & Abort",FL:"Flows",TO:"Takeoffs",PT:"Pattern & Landing",GA:"Go-Around & Slip",MN:"Stalls, Slow Flight, Steep Turns",GR:"Ground Reference",EM:"Emergencies"};
+const tp=id=>id.replace(/\d+/,"");
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const N=Q.length,L="ABCD",O=sh(Q.map((_,i)=>i));
+const S=Q.map(q=>({t:0,ch:0,h:0,sk:0,a:null,f:null,perm:q[1]=="m"?sh(q[3].map((_,i)=>i)):0}));
+let k=0,ts=Date.now(),t0=Date.now();
+const app=document.getElementById("app");
+const num=s=>{const m=String(s).replace(/[,\s+]/g,"").match(/^-?[\d.]+/);return m?+m[0]:NaN};
+const ok=(q,a)=>a!==null&&(q[1]=="m"?a===q[4]:q[3].some(x=>num(x)===num(a)));
+const lap=()=>{S[O[k]].t+=Date.now()-ts;ts=Date.now()};
+document.addEventListener("visibilitychange",()=>{document.hidden?lap():ts=Date.now()});
+
+function intro(){app.innerHTML=`<h1>DA20 Training Supplement Quiz</h1><div class="card"><p>${N} questions across ${Object.keys(T).length} topics, drawn from the TakeFlight DA20 Training Supplement, with extra weight on maneuvers. Short and soft field content is left out. Typed answers are numbers only (units optional).</p><p class="mu">Tracked per question: time, answer changes, first vs. final answer, hints, and skips. At the end you get a results code to paste back to Claude.</p><p class="mu">Hint shows the Supplement page to review, never the answer. The timer pauses when you leave the tab.</p><button class="p" onclick="start()">Start quiz</button></div>`}
+function start(){t0=ts=Date.now();render()}
+function render(){
+ const q=Q[O[k]],s=S[O[k]];ts=Date.now();
+ app.innerHTML=`<div class="mu">Question ${k+1} of ${N}, ${T[tp(q[0])]}</div><div class="bar"><i style="width:${k/N*100}%"></i></div>
+ <div class="card"><p><b>${q[2]}</b></p>${q[1]=="m"?s.perm.map(j=>`<button class="o${s.a===j?" s":""}" onclick="pick(${j})">${q[3][j]}</button>`).join(""):`<input id="in" inputmode="decimal" autocomplete="off" placeholder="Type a number" value="${s.a??""}" onkeydown="if(event.key=='Enter')go(1)">`}<p class="mu" id="hn">${s.h?"Review Supplement p."+q[q.length-1]:""}</p></div>
+ <div class="row"><button onclick="go(-1)" ${k?"":"disabled"}>Back</button><button onclick="hint()">Hint</button><button class="p" style="margin-left:auto" onclick="go(1)">${k==N-1?"Finish":"Next"}</button></div>`;
+ const i=document.getElementById("in");if(i)i.focus();
+}
+function pick(j){const s=S[O[k]];if(s.a!==null&&s.a!==j)s.ch++;if(s.f===null)s.f=j;s.a=j;render()}
+function commit(){const i=document.getElementById("in");if(!i)return;const v=i.value.trim(),s=S[O[k]];if(v&&v!==s.a){if(s.a!==null)s.ch++;if(s.f===null)s.f=v;s.a=v}}
+function hint(){const s=S[O[k]],q=Q[O[k]];s.h++;document.getElementById("hn").textContent="Review Supplement p."+q[q.length-1]}
+function go(d){commit();lap();const s=S[O[k]];if(d>0&&s.a===null)s.sk++;
+ if(d>0&&k==N-1){const u=S.filter(x=>x.a===null).length;if(u&&!confirm(u+" unanswered. Finish anyway?")){ts=Date.now();return}done();return}
+ k+=d;render()}
+const show=(q,a)=>a===null?"(blank)":q[1]=="m"?q[3][a]:a;
+function done(){
+ const tot=Math.round((Date.now()-t0)/1000);
+ const R=Q.map((q,i)=>{const s=S[i];return{q,s,c:ok(q,s.a)?1:0,f:ok(q,s.f)?1:0,t:Math.round(s.t/1000)}});
+ const right=R.filter(r=>r.c).length,pct=Math.round(right/N*100);
+ const tops={};R.forEach(r=>{const c=tp(r.q[0]);const o=tops[c]||(tops[c]={r:0,n:0,t:0,ch:0});o.n++;o.r+=r.c;o.t+=r.t;o.ch+=r.s.ch});
+ const wr=R.filter(r=>!r.f&&r.c).length,rw=R.filter(r=>r.f&&!r.c).length,hs=R.filter(r=>r.s.h).length,sk=R.reduce((a,r)=>a+r.s.sk,0);
+ const code=`TFADA20Q2|${new Date().toISOString().slice(0,10)}|${right}/${N}|${tot}|`+R.map(r=>[r.q[0],r.c,r.f,r.t,r.s.ch,r.s.h?1:0,r.s.sk,r.s.a===null?"-":r.q[1]=="m"?L[r.s.a]:String(r.s.a).replace(/[,;|]/g,"")].join(",")).join(";");
+ const slow=[...R].sort((a,b)=>b.t-a.t).slice(0,5);
+ const miss=R.filter(r=>!r.c);
+ app.innerHTML=`<h1>Results</h1><div class="card"><div class="big">${pct}%</div><p>${right} of ${N} correct. Stage 1 target: 85–90%.</p>
+ <p class="mu">Total ${Math.floor(tot/60)}m ${tot%60}s · average ${Math.round(tot/N)}s per question<br>Changed wrong to right: ${wr} · right to wrong: ${rw} · hints used: ${hs} · skips: ${sk}</p></div>
+ <h2>By topic</h2><div class="card tw"><table><tr><th>Topic</th><th>Score</th><th>Avg time</th><th>Changes</th></tr>${Object.keys(tops).sort((a,b)=>tops[a].r/tops[a].n-tops[b].r/tops[b].n).map(c=>{const o=tops[c],p=Math.round(o.r/o.n*100);return`<tr><td>${T[c]}</td><td class="${p>=85?"ok":"no"}">${o.r}/${o.n} (${p}%)</td><td>${Math.round(o.t/o.n)}s</td><td>${o.ch}</td></tr>`}).join("")}</table></div>
+ <h2>Slowest questions</h2><div class="card tw"><table>${slow.map(r=>`<tr><td>${r.t}s</td><td style="white-space:normal">${r.q[2]}</td></tr>`).join("")}</table></div>
+ <h2>Missed (${miss.length})</h2><div class="card tw"><table>${miss.map(r=>`<tr><td style="white-space:normal"><b>${r.q[2]}</b><br><span class="no">You: ${show(r.q,r.s.a)}</span><br><span class="ok">Answer: ${r.q[1]=="m"?r.q[3][r.q[4]]:r.q[3][0]}</span> <span class="mu">(Supplement p.${r.q[r.q.length-1]})</span></td></tr>`).join("")||"<tr><td>None. Clean sweep.</td></tr>"}</table></div>
+ <h2>Your results code</h2><div class="card"><p class="mu">Copy this whole block and paste it to Claude along with your daily study plan.</p><textarea id="cd" readonly>${code}</textarea><div class="row"><button class="p" onclick="cp()">Copy code</button><button onclick="location.reload()">Retake</button></div><p class="mu" id="cm"></p></div>`;
+ scrollTo(0,0)}
+function cp(){const t=document.getElementById("cd");t.select();let m="Copied.";try{navigator.clipboard.writeText(t.value).catch(()=>document.execCommand("copy"))}catch(e){try{document.execCommand("copy")}catch(_){m="Press and hold the box to copy manually."}}document.getElementById("cm").textContent=m}
+intro();
+</script></body></html>
